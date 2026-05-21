@@ -150,7 +150,7 @@ To include this update in the existing PR:
 
 ```bash
 git checkout docs/engineering-standards
-git add docs/engineering-standards/AGENTS.md
+git add AGENTS.md
 git commit -m "docs: Update AGENTS.md with practical development sections
 
 - Add Tech Stack & Infrastructure (Section 11)

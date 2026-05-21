@@ -372,11 +372,11 @@ agent/
 
 ## References
 
-- [ENGINEERING_STANDARDS.md](./ENGINEERING_STANDARDS.md) - Core engineering standards
-- [SECURITY_GUIDELINES.md](./SECURITY_GUIDELINES.md) - Security guidelines
-- [CODE_REVIEW_GUIDELINES.md](./CODE_REVIEW_GUIDELINES.md) - Code review process
-- [TESTING_STANDARDS.md](./TESTING_STANDARDS.md) - Testing requirements
-- [ARCHITECTURE_GUIDELINES.md](./ARCHITECTURE_GUIDELINES.md) - Architecture principles
+- [ENGINEERING_STANDARDS.md](./docs/engineering-standards/ENGINEERING_STANDARDS.md) - Core engineering standards
+- [SECURITY_GUIDELINES.md](./docs/engineering-standards/SECURITY_GUIDELINES.md) - Security guidelines
+- [CODE_REVIEW_GUIDELINES.md](./docs/engineering-standards/CODE_REVIEW_GUIDELINES.md) - Code review process
+- [TESTING_STANDARDS.md](./docs/engineering-standards/TESTING_STANDARDS.md) - Testing requirements
+- [ARCHITECTURE_GUIDELINES.md](./docs/engineering-standards/ARCHITECTURE_GUIDELINES.md) - Architecture principles
 
 ## Approval & Revision History
 

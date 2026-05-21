@@ -99,8 +99,8 @@ To add these files to the existing pull request:
 ```bash
 # Assuming you're in the repository root
 git checkout docs/engineering-standards  # Switch to the PR branch
-git add docs/engineering-standards/AGENTS.md
-git add docs/engineering-standards/DESIGN.md
+git add AGENTS.md
+git add DESIGN.md
 git commit -m "docs: Add AGENTS.md and DESIGN.md standards
 
 - Create comprehensive AI agent governance standards
