@@ -1,0 +1,24 @@
+# Default owner for all files
+* @lawaladekunle
+
+# Security-sensitive files
+SECURITY.md @lawaladekunle
+.github/CODEOWNERS @lawaladekunle
+
+# CI/CD pipeline
+.github/workflows/ @lawaladekunle
+.github/dependabot.yml @lawaladekunle
+
+# Infrastructure
+docker-compose.yml @lawaladekunle
+Dockerfile @lawaladekunle
+
+# Backend
+backend/ @lawaladekunle
+
+# Frontend
+frontend/ @lawaladekunle
+
+# Documentation
+docs/ @lawaladekunle
+README.md @lawaladekunle
