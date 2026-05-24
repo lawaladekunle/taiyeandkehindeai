@@ -2,8 +2,15 @@ name: Setup Branch Protection
 
 on:
   workflow_dispatch:
-
-permissions: write-all
+    inputs:
+      token-type:
+        description: Token to use (admin_pat or github_token)
+        required: true
+        default: admin_pat
+        type: choice
+        options:
+          - admin_pat
+          - github_token
 
 jobs:
   protect-main:
@@ -14,6 +21,6 @@ jobs:
 
       - name: Apply branch protection
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ inputs.token-type == 'admin_pat' && secrets.ADMIN_PAT || secrets.GITHUB_TOKEN }}
         run: |
           .github/scripts/setup-branch-protection.sh
