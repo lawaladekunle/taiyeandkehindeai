@@ -6,11 +6,15 @@ on:
       token-type:
         description: Token to use (admin_pat or github_token)
         required: true
-        default: admin_pat
+        default: github_token
         type: choice
         options:
           - admin_pat
           - github_token
+
+permissions:
+  administration: write
+  contents: read
 
 jobs:
   protect-main:
