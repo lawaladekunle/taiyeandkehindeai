@@ -19,8 +19,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Apply branch protection
+      - name: Apply branch protection (admin_pat)
+        if: inputs.token-type == 'admin_pat'
         env:
-          GH_TOKEN: ${{ inputs.token-type == 'admin_pat' && secrets.ADMIN_PAT || secrets.GITHUB_TOKEN }}
-        run: |
-          .github/scripts/setup-branch-protection.sh
+          GH_TOKEN: ${{ secrets.ADMIN_PAT }}
+        run: .github/scripts/setup-branch-protection.sh
+
+      - name: Apply branch protection (github_token)
+        if: inputs.token-type == 'github_token'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/setup-branch-protection.sh
