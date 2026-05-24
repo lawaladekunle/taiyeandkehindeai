@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: "0 6 * * 1"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   secrets-scan:
     name: Secret scanning
@@ -29,19 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: reviewdog/action-actionlint@v1
         with:
-          node-version: "20"
-
-      - name: Install actionlint
-        run: |
-          go install github.com/rhysd/actionlint/cmd/actionlint@latest 2>/dev/null || true
-          which actionlint 2>/dev/null || echo "actionlint not available, skipping"
-
-      - name: Validate workflows
-        run: |
-          if command -v actionlint &> /dev/null; then
-            actionlint
-          else
-            echo "actionlint not installed, skipping workflow validation"
-          fi
+          reporter: github-pr-review
+          fail_on_error: true
