@@ -8,7 +8,7 @@ REPO="${1:-lawaladekunle/taiyeandkehindeai}"
 echo "Setting up branch protection for main on $REPO..."
 
 # Require pull request review before merging
-gh api "repos/$REPO/branches/main/protection" \
+if gh api "repos/$REPO/branches/main/protection" \
   --method PUT \
   --silent \
   --input - <<'JSON'
@@ -36,18 +36,31 @@ gh api "repos/$REPO/branches/main/protection" \
   "lock_branch": false
 }
 JSON
-
-echo "Branch protection enabled for main branch."
-echo ""
-echo "Summary:"
-echo "  - Required approving reviews: 1"
-echo "  - Dismiss stale reviews: yes"
-echo "  - Require code owner reviews: yes"
-echo "  - Require status checks: yes (strict)"
-echo "  - Include administrators: yes"
-echo "  - Force pushes: disabled"
-echo "  - Deletions: disabled"
-
-echo ""
-echo "Status checks required:"
-gh api "repos/$REPO/branches/main/protection" --jq '.required_status_checks.contexts[]' 2>/dev/null || echo "  (run after CI has completed at least once)"
+then
+  echo "Branch protection enabled for main branch."
+  echo ""
+  echo "Summary:"
+  echo "  - Required approving reviews: 1"
+  echo "  - Dismiss stale reviews: yes"
+  echo "  - Require code owner reviews: yes"
+  echo "  - Require status checks: yes (strict)"
+  echo "  - Include administrators: yes"
+  echo "  - Force pushes: disabled"
+  echo "  - Deletions: disabled"
+else
+  echo "ERROR: Failed to apply branch protection."
+  echo ""
+  echo "The token being used does not have 'administration:write' scope."
+  echo ""
+  echo "To fix this, create a fine-grained PAT at:"
+  echo "  https://github.com/settings/tokens"
+  echo ""
+  echo "Required permissions for repo lawaladekunle/taiyeandkehindeai:"
+  echo "  - Administration: Read and write"
+  echo "  - Contents: Read-only"
+  echo "  - Pull requests: Read and write"
+  echo ""
+  echo "Then update the ADMIN_PAT secret at:"
+  echo "  https://github.com/lawaladekunle/taiyeandkehindeai/settings/secrets/actions"
+  exit 1
+fi
