@@ -3,44 +3,15 @@ name: Setup Branch Protection
 on:
   workflow_dispatch:
 
+permissions: write-all
+
 jobs:
   protect-main:
     name: Protect main branch
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
       - name: Apply branch protection
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh api --method PUT "/repos/${{ github.repository }}/branches/main/protection" \
-            --silent \
-            --input - <<'JSON'
-          {
-            "required_status_checks": {
-              "strict": true,
-              "contexts": [
-                "Backend (lint + test)",
-                "Frontend (lint + test + build)",
-                "Docker build check",
-                "CodeQL analysis (python)",
-                "CodeQL analysis (javascript-typescript)",
-                "Dependency review"
-              ]
-            },
-            "enforce_admins": true,
-            "required_pull_request_reviews": {
-              "required_approving_review_count": 1,
-              "dismiss_stale_reviews": true,
-              "require_code_owner_reviews": true
-            },
-            "restrictions": null,
-            "allow_force_pushes": false,
-            "allow_deletions": false,
-            "lock_branch": false
-          }
-JSON
-          echo "Branch protection enabled for main branch."
+          .github/scripts/setup-branch-protection.sh
