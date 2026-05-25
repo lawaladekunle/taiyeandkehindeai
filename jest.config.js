@@ -1,6 +1,7 @@
 /** @type {import('jest').Config} */
 const config = {
-  testEnvironment: "jsdom",
+  // Default to node — override with @jest-environment jsdom in DOM test files
+  testEnvironment: "node",
   testMatch: ["<rootDir>/src/__tests__/**/*.test.{ts,tsx}"],
   transform: {
     "^.+\\.tsx?$": [
@@ -8,6 +9,7 @@ const config = {
       {
         tsconfig: {
           jsx: "react-jsx",
+          target: "es6",
           esModuleInterop: true,
           module: "commonjs",
           moduleResolution: "node",

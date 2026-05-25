@@ -42,7 +42,7 @@ model Appointment {
   clinicianId   String
   scheduledAt   DateTime
   durationMin   Int         @default(30)
-  status        String      @default("pending") // pending | confirmed | cancelled | completed
+  status        String      @default("pending") // pending | confirmed | cancelled | completed | declined | reschedule_proposed
   reason        String?
   notes         String?
   createdAt     DateTime    @default(now())
