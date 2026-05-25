@@ -174,7 +174,7 @@ export function extractTime(message: string): Date | null {
 
   // Check for day references
   const now = new Date();
-  let targetDate = new Date(now);
+  const targetDate = new Date(now);
   targetDate.setHours(hours, minutes, 0, 0);
 
   if (/\btomorrow\b/i.test(message)) {

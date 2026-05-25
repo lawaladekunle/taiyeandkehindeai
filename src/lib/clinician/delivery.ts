@@ -8,7 +8,7 @@
  */
 
 import { PrismaClient, Clinician, Appointment } from "@prisma/client";
-import { getDayName, isClinicianAvailable } from "./utils";
+import { getDayName } from "./utils";
 
 const prisma = new PrismaClient();
 
