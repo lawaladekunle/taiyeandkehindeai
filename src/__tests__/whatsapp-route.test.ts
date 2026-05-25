@@ -158,6 +158,32 @@ describe("POST /api/webhooks/whatsapp", () => {
 
     expect(response.status).toBe(200);
   });
+
+  it("should fallback to request.url when nextUrl is unavailable", async () => {
+    mockVerify.mockReturnValue(true);
+    mockParse.mockReturnValue({
+      from: "whatsapp:+2348012345678",
+      to: "whatsapp:+14155238886",
+      messageType: "text",
+      messageSid: "SM900",
+      text: "ok",
+      timestamp: new Date(),
+    });
+
+    // Simulate a plain Fetch API Request (no nextUrl property)
+    const plainRequest = new Request("https://example.com/api/webhooks/whatsapp", {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "x-twilio-signature": "valid",
+      },
+      body: "Body=ok&From=whatsapp%3A%2B123&MessageSid=SM900",
+    });
+
+    const response = await POST(plainRequest as unknown as Request);
+
+    expect(response.status).toBe(200);
+  });
 });
 
 describe("Non-POST methods", () => {

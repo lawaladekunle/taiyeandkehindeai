@@ -223,5 +223,36 @@ describe("parseIncomingMessage", () => {
 
       expect(result.messageType).toBe("unknown");
     });
+
+    it("should handle media message without content type header", () => {
+      const body = {
+        MessageSid: "SM600",
+        From: "whatsapp:+2348012345678",
+        To: "whatsapp:+14155238886",
+        NumMedia: "1",
+        MediaUrl0: "https://api.twilio.com/media/IMG789.jpg",
+      };
+
+      const result = parseIncomingMessage(body);
+
+      expect(result.messageType).toBe("media");
+      expect(result.mediaUrl).toBe("https://api.twilio.com/media/IMG789.jpg");
+      expect(result.mediaContentType).toBeUndefined();
+      expect(result.text).toBeUndefined();
+    });
+
+    it("should preserve body text for unknown message types", () => {
+      const body = {
+        MessageSid: "SM700",
+        From: "whatsapp:+123",
+        To: "whatsapp:+456",
+        Body: "some fallback text",
+      };
+
+      const result = parseIncomingMessage(body);
+
+      expect(result.messageType).toBe("text");
+      expect(result.text).toBe("some fallback text");
+    });
   });
 });
