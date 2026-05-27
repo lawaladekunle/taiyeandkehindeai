@@ -1,108 +1,70 @@
-# Medical Communications & Scheduling Assistant
+# Taiye & Kehinde
 
-AI-powered assistant for managing patient communications, appointment scheduling, and clinical coordination.
+Medical Communications & Scheduling Assistant — an AI-powered WhatsApp-based scheduling system for clinics and patients.
 
-## Architecture
+## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Backend API | Python 3.12 + FastAPI |
-| Frontend | React 18 + TypeScript + Vite |
-| Database | PostgreSQL 16 |
-| Cache | Redis 7 |
-| Container | Docker + Docker Compose |
-| CI/CD | GitHub Actions |
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript
+- **Database:** PostgreSQL + Prisma ORM
+- **Styling:** Tailwind CSS
+- **Auth:** NextAuth.js (Auth.js v4)
+- **Testing:** Jest + React Testing Library
+
+## Quick Start
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Set up environment
+cp .env.example .env
+
+# 3. Generate Prisma client
+npx prisma generate
+
+# 4. Start dev server
+npm run dev
+
+# 5. Verify health
+curl http://localhost:3000/api/health
+```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm start` | Start production server |
+| `npm test` | Run tests |
+| `npm run lint` | Run ESLint |
 
 ## Project Structure
 
 ```
-.
-├── backend/
-│   ├── app/
-│   │   ├── api/          # Route handlers
-│   │   ├── core/         # Config, security, dependencies
-│   │   ├── models/       # SQLAlchemy models
-│   │   └── services/     # Business logic
-│   ├── tests/
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── components/   # Reusable UI components
-│   │   ├── pages/        # Route-level page components
-│   │   ├── hooks/        # Custom React hooks
-│   │   └── utils/        # Helpers and API client
-│   ├── Dockerfile
-│   └── package.json
-├── .github/
-│   └── workflows/        # CI/CD pipelines
-├── docker-compose.yml
-└── docs/                 # Architecture and API docs
+src/
+├── app/
+│   ├── api/health/route.ts   # Health check endpoint
+│   ├── layout.tsx            # Root layout
+│   ├── page.tsx              # Home page
+│   └── globals.css           # Global styles
+├── __tests__/                # Test files
+prisma/
+└── schema.prisma             # Database schema
 ```
 
-## Prerequisites
+## Models
 
-- Docker 24+ and Docker Compose v2
-- Node.js 20+ (for local frontend dev)
-- Python 3.12+ (for local backend dev)
-
-## Quick Start
-
-### With Docker Compose (recommended)
-
-```bash
-cp .env.example .env
-docker compose up --build
-```
-
-- API: http://localhost:8000
-- API docs: http://localhost:8000/docs
-- Frontend: http://localhost:5173
-
-### Local backend development
-
-```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-cp ../.env.example ../.env
-uvicorn app.main:app --reload
-```
-
-### Local frontend development
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and fill in values:
-
-| Variable | Description |
-|----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `REDIS_URL` | Redis connection string |
-| `SECRET_KEY` | JWT signing secret (generate with `openssl rand -hex 32`) |
-| `ANTHROPIC_API_KEY` | Claude API key for AI features |
-
-## Running Tests
-
-```bash
-# Backend
-cd backend && pytest
-
-# Frontend
-cd frontend && npm test
-```
+- **Patient** — patient profiles with contact info
+- **Clinician** — clinician profiles with availability
+- **Appointment** — scheduled appointments with status tracking
+- **Reminder** — automated reminders via WhatsApp
 
 ## CI/CD
 
-Pull requests trigger:
-1. Backend linting (ruff) and tests (pytest)
-2. Frontend linting (ESLint) and tests (Vitest)
-3. Docker build verification
+GitHub Actions runs lint → test → build on every push to `main`.
 
-Merges to `main` deploy to the staging environment.
+## License
+
+Proprietary — all rights reserved.

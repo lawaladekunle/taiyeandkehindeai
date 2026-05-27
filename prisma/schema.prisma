@@ -1,0 +1,73 @@
+// Prisma schema for Taiye & Kehinde — Medical Scheduling Assistant
+// Database: PostgreSQL (production), SQLite (local dev)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Core Domain Models ──
+
+model Patient {
+  id            String        @id @default(cuid())
+  phoneNumber   String        @unique
+  name          String?
+  preferredName String?
+  language      String        @default("en")
+  timezone      String        @default("Africa/Lagos")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  appointments  Appointment[]
+}
+
+model Clinician {
+  id            String        @id @default(cuid())
+  phoneNumber   String        @unique
+  name          String?
+  specialty     String?
+  availability  Json?         // { "days": ["Mon","Tue"], "hours": { "start": "09:00", "end": "17:00" } }
+  maxDailyAppts Int           @default(10)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  appointments  Appointment[]
+}
+
+model Appointment {
+  id            String      @id @default(cuid())
+  patientId     String
+  clinicianId   String
+  scheduledAt   DateTime
+  durationMin   Int         @default(30)
+  status        String      @default("pending") // pending | confirmed | cancelled | completed | declined | reschedule_proposed
+  reason        String?
+  notes         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  patient       Patient     @relation(fields: [patientId], references: [id])
+  clinician     Clinician   @relation(fields: [clinicianId], references: [id])
+  reminders     Reminder[]
+
+  @@index([patientId])
+  @@index([clinicianId])
+  @@index([scheduledAt])
+}
+
+model Reminder {
+  id            String      @id @default(cuid())
+  appointmentId String
+  sendAt        DateTime
+  channel       String      @default("whatsapp") // whatsapp | sms
+  status        String      @default("pending")  // pending | sent | failed
+  sentAt        DateTime?
+  errorMessage  String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+
+  @@index([appointmentId])
+  @@index([sendAt])
+}

@@ -1,26 +1,37 @@
-# Environment
-.env
-.env.local
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Python
-__pycache__/
-*.pyc
-.venv/
-.pytest_cache/
-htmlcov/
-.coverage
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
 
-# Node
-node_modules/
-dist/
-.vite/
+# testing
+/coverage
 
-# OS
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
 .DS_Store
+*.pem
 
-# IDE
-.vscode/
-.idea/
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Docker
-postgres_data/
+# local env files
+.env
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
