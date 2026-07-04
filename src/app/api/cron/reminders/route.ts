@@ -87,24 +87,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // ── 2. Missed-appointment loopback closure ────────────────────────────────
-  // Appointments that were pending/confirmed, have now passed, and haven't
-  // had a missed-follow-up sent yet.
+  // Appointments that were pending/confirmed whose scheduled time has passed.
   // We mark them as "completed" (missed) and send a follow-up message.
+  // Dedup: the status transition to "completed" ensures the same appointment
+  // is never picked up twice; no separate reminder-type filter needed.
   const missedCutoff = new Date(now.getTime() - 2 * 60 * 60 * 1000); // 2 hours past
 
   const missedAppointments = await prisma.appointment.findMany({
     where: {
       scheduledAt: { lt: missedCutoff },
       status: { in: ["pending", "confirmed"] },
-      // Ensure no missed-follow-up reminder was already sent
-      reminders: {
-        none: {
-          channel: "whatsapp",
-          status: "sent",
-          // Distinguish loopback reminders by sendAt being after scheduledAt
-          // We rely on the appointment's own scheduledAt for the filter below
-        },
-      },
     },
     include: { patient: true, clinician: true },
   });
